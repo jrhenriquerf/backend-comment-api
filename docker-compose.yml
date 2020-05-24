@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  php-server:
+    container_name: php-server
+    build: .
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - '8080:8080'
+    expose:
+      - '8080'
+    depends_on:
+      - mysql-database
+    links:
+      - mysql-database
+
+  mysql-database:
+    container_name: mysql-database
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: social_media
+      MYSQL_ROOT_PASSWORD: root
+      SERVICE_NAME: mysql
+    ports:
+      - '3306:3306'
