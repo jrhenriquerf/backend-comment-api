@@ -2,9 +2,11 @@
     "name": "phalcon/socialmedia",
     "description": "Esapiens challenge",
     "require": {
-        "vlucas/phpdotenv": "^4.1"
+        "vlucas/phpdotenv": "^4.1",
+        "phalcon/migrations": "^2.1",
+        "ext-phalcon": "^4.0"
     },
     "require-dev": {
-        "phalcon/migrations": "^2.1"
+        "phalcon/devtools": "^4.0"
     }
 }

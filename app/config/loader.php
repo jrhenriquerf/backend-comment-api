@@ -1,17 +1,14 @@
 <?php
 
 use Phalcon\Loader;
-use Dotenv\Dotenv;
-
-require __DIR__ . '/../../vendor/autoload.php';
-
-$dotenv = Dotenv::createImmutable(__DIR__ . "/../..");
-$dotenv->load();
 
 $loader = new Loader();
 $loader->registerNamespaces(
     [
-        'MyApp\Models' => __DIR__ . '/../models/',
+        'App\Services'    => realpath(__DIR__ . '/../services/'),
+        'App\Controllers' => realpath(__DIR__ . '/../controllers/'),
+        'App\Models'      => realpath(__DIR__ . '/../models/'),
+        'App\Exceptions'  => realpath(__DIR__ . '/../exceptions/'),
     ]
 );
 $loader->register();
