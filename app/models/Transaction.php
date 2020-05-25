@@ -25,6 +25,18 @@ class Transaction extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var double
+     */
+    protected $price;
+
+    /**
+     *
+     * @var string
+     */
+    protected $type;
+
+    /**
+     *
      * @var string
      */
     protected $datetime;
@@ -64,6 +76,32 @@ class Transaction extends \Phalcon\Mvc\Model
     public function setCommentId($comment_id)
     {
         $this->comment_id = $comment_id;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field price
+     *
+     * @param double $price
+     * @return $this
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field type
+     *
+     * @param string $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
 
         return $this;
     }
@@ -109,6 +147,26 @@ class Transaction extends \Phalcon\Mvc\Model
     public function getCommentId()
     {
         return $this->comment_id;
+    }
+
+    /**
+     * Returns the value of field price
+     *
+     * @return double
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Returns the value of field type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**

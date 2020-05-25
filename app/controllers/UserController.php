@@ -28,7 +28,7 @@ class UserController extends AbstractController
 
         $data->money = $data->money ?: 0;
 
-        $data->subscriber = $data->subscriber ?: 0;
+        $data->subscriber = $data->subscriber ? 1 : 0;
 
         if ($errors) {
             $exception = new Http400Exception(_('Input parameters validation error'));
@@ -43,7 +43,7 @@ class UserController extends AbstractController
                 case UserService::ERROR_UNABLE_CREATE_USER:
                     throw new Http422Exception($e->getMessage(), (array) $e);
                 default:
-                    throw new Http500Exception(_('Internal Server Error'), $e);
+                    throw new Http500Exception(_('Internal Server Error'), (array) $e);
             }
         }
     }
@@ -58,13 +58,7 @@ class UserController extends AbstractController
         try {
             return $this->userService->getAllUsers();
         } catch (ServiceException $e) {
-            switch ($e->getCode()) {
-                case AbstractService::ERROR_ALREADY_EXISTS:
-                case UserService::ERROR_UNABLE_CREATE_USER:
-                    throw new Http422Exception($e->getMessage(), (array) $e);
-                default:
-                    throw new Http500Exception(_('Internal Server Error'), $e);
-            }
+            throw new Http500Exception(_('Internal Server Error'), (array) $e);
         }
     }
 
@@ -97,7 +91,7 @@ class UserController extends AbstractController
                 case UserService::ERROR_UNABLE_UPDATE_USER:
                     throw new Http422Exception($e->getMessage(), (array) $e);
                 default:
-                    throw new Http500Exception(_('Internal Server Error'), $e);
+                    throw new Http500Exception(_('Internal Server Error'), (array) $e);
             }
         }
     }
@@ -119,7 +113,7 @@ class UserController extends AbstractController
                 case UserService::ERROR_UNABLE_DELETE_USER:
                     throw new Http422Exception($e->getMessage(), (array) $e);
                 default:
-                    throw new Http500Exception(_('Internal Server Error'), $e);
+                    throw new Http500Exception(_('Internal Server Error'), (array) $e);
             }
         }
     }

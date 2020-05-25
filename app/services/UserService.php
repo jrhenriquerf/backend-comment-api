@@ -59,6 +59,8 @@ class UserService extends AbstractService
      */
     public function getAllUsers()
     {
+        $usersList = [];
+
         try {
             $users = (new User())->find();
 
@@ -119,13 +121,17 @@ class UserService extends AbstractService
                 $password = password_hash($userData->password, PASSWORD_DEFAULT);
             }
             
-            $user->setUsername($data->username ?: $user->getUsername())
+            $updated = $user->setUsername($data->username ?: $user->getUsername())
                  ->setPassword($password)
                  ->setEmail($data->email ?: $user->getEmail())
                  ->setName($data->name ?: $user->getName())
                  ->setMoney($data->money === null ? $user->getMoney() : $data->money)
                  ->setSubscriber($data->subscriber === null ? $user->getSubscriber() : (int) $data->subscriber)
                  ->save();
+
+            if (!$updated) {
+                throw new ServiceException("Unable to update user", self::ERROR_UNABLE_UPDATEs_USER);
+            }
 
             return [
                 'id' => $user->getId(),
@@ -135,6 +141,30 @@ class UserService extends AbstractService
                 'money' => $user->getMoney(),
                 'subscriber' => $user->getSubscriber(),
             ];
+        } catch (\PDOException $e) {
+            throw new ServiceException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * Updating an users
+     * 
+     * @param int $userId
+     * @param object $data
+     * 
+     * @return void
+     */
+    public function pay(int $userId, int $money)
+    {
+        try {
+            $user = $this->findUser($userId);
+            
+            $newUserMoney = $user->getMoney() - $money;
+            $updated = $user->setMoney($newUserMoney)->save();
+
+            if (!$updated) {
+                throw new ServiceException("Unable to pay", self::ERROR_UNABLE_UPDATE_USER);
+            }
         } catch (\PDOException $e) {
             throw new ServiceException($e->getMessage(), $e->getCode());
         }
@@ -160,5 +190,11 @@ class UserService extends AbstractService
         } catch (\PDOException $e) {
             throw new ServiceException($e->getMessage(), $e->getCode());
         }
+    }
+
+    public function canBuyHighlight(int $userId, int $money)
+    {
+        $user = $this->findUser($userId);
+        return $user->getMoney() >= $money;
     }
 }

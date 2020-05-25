@@ -30,6 +30,18 @@ class Notification extends \Phalcon\Mvc\Model
     protected $datetime;
 
     /**
+     *
+     * @var string
+     */
+    protected $message;
+
+    /**
+     *
+     * @var integer
+     */
+    protected $user_id;
+
+    /**
      * Method to set the value of field id
      *
      * @param integer $id
@@ -82,6 +94,32 @@ class Notification extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Method to set the value of field message
+     *
+     * @param string $message
+     * @return $this
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field user_id
+     *
+     * @param integer $user_id
+     * @return $this
+     */
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    /**
      * Returns the value of field id
      *
      * @return integer
@@ -122,12 +160,33 @@ class Notification extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Returns the value of field message
+     *
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * Returns the value of field user_id
+     *
+     * @return integer
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
     {
         $this->setSchema("social_media");
         $this->setSource("Notification");
+        $this->belongsTo('user_id', 'App\Models\User', 'id', ['alias' => 'User']);
         $this->belongsTo('comment_id', 'App\Models\Comment', 'id', ['alias' => 'Comment']);
     }
 

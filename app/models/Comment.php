@@ -48,6 +48,12 @@ class Comment extends \Phalcon\Mvc\Model
     protected $datetime;
 
     /**
+     *
+     * @var string
+     */
+    protected $deleted_at;
+
+    /**
      * Method to set the value of field id
      *
      * @param integer $id
@@ -139,6 +145,19 @@ class Comment extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Method to set the value of field deleted_at
+     *
+     * @param string $deleted_at
+     * @return $this
+     */
+    public function setDeletedAt($deleted_at)
+    {
+        $this->deleted_at = $deleted_at;
+
+        return $this;
+    }
+
+    /**
      * Returns the value of field id
      *
      * @return integer
@@ -206,6 +225,16 @@ class Comment extends \Phalcon\Mvc\Model
     public function getDatetime()
     {
         return $this->datetime;
+    }
+
+    /**
+     * Returns the value of field deleted_at
+     *
+     * @return string
+     */
+    public function getDeletedAt()
+    {
+        return $this->deleted_at;
     }
 
     /**
