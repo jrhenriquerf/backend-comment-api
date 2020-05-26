@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Comment;
+
 use App\Exceptions\ServiceExceptions\ServiceException;
 
 /**
@@ -30,6 +31,11 @@ class CommentService extends AbstractService
      */
     public function createComment(object $data)
     {
+        $highligthDatetime = date(
+            'Y-m-d H:i:s', 
+            strtotime("+{$data->price} minutes")
+        );
+
         try {
             $comment   = new Comment();
             $result = $comment->setUserId($data->user_id)
@@ -37,6 +43,7 @@ class CommentService extends AbstractService
                 ->setHighlight($data->highlight)
                 ->setPrice($data->price)
                 ->setComment($data->comment)
+                ->setDateTimeHighlight($highligthDatetime)
                 ->create();
 
             if (!$result) {
@@ -64,7 +71,6 @@ class CommentService extends AbstractService
         try {
             $comments = Comment::query()
                 ->where('deleted_at is null')
-                ->orderBy('datetime desc')
                 ->execute();
 
             foreach ($comments as $comment) {
@@ -81,14 +87,40 @@ class CommentService extends AbstractService
                     'comment' => $comment->getComment(),
                     'highlight' => $comment->getHighlight(),
                     'price' => $comment->getPrice(),
-                    'date' => $comment->getDateTime()
+                    'date' => $comment->getDateTime(),
+                    'highlightDateFinish' => $comment->getDatetimeHighlight()
                 ];
             }
+
+            usort($commentsList, [ $this, 'orderComments' ]);
 
             return $commentsList;
         } catch (\PDOException $e) {
             throw new ServiceException($e->getMessage(), $e->getCode());
         }
+    }
+
+    private function checkHighlight(string $highligthDatetime) {
+        if (strtotime($highligthDatetime) >= strtotime("now")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Order comments
+     */
+    private function orderComments($a, $b) {
+        if ($this->checkHighlight($a["highlightDateFinish"])) {
+            return $a["price"] > $b["price"] ? -1 : 1;
+        }
+
+        if (strtotime($a['highlightDateFinish']) == strtotime($b['highlightDateFinish'])) {
+            return 0;
+        }
+        
+        return strtotime($a['highlightDateFinish']) > strtotime($b['highlightDateFinish']) ? -1 : 1;
     }
 
     /**

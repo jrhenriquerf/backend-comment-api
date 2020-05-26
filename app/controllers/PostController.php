@@ -11,6 +11,9 @@ use App\Exceptions\HttpExceptions\Http500Exception;
 use App\Services\AbstractService;
 use App\Services\PostService;
 
+use App\Controllers\Helpers\Helper;
+
+
 /**
  * Operations with Posts
  */
@@ -51,8 +54,13 @@ class PostController extends AbstractController
      */
     public function getAllAction()
     {
+        $page = $this->request->get('page');
+        $limit = $this->request->get('limit');
+
         try {
-            return $this->postService->getAllPosts();
+            $postsList = $this->postService->getAllPosts();
+
+            return Helper::paginate($postsList, $page, $limit);
         } catch (ServiceException $e) {
             throw new Http500Exception(_('Internal Server Error'), (array) $e);
         }

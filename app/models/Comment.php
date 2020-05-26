@@ -51,6 +51,12 @@ class Comment extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    protected $datetime_highlight;
+
+    /**
+     *
+     * @var string
+     */
     protected $deleted_at;
 
     /**
@@ -145,6 +151,19 @@ class Comment extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Method to set the value of field datetime_highlight
+     *
+     * @param string $datetime_highlight
+     * @return $this
+     */
+    public function setDatetimeHighlight($datetime_highlight)
+    {
+        $this->datetime_highlight = $datetime_highlight;
+
+        return $this;
+    }
+
+    /**
      * Method to set the value of field deleted_at
      *
      * @param string $deleted_at
@@ -225,6 +244,16 @@ class Comment extends \Phalcon\Mvc\Model
     public function getDatetime()
     {
         return $this->datetime;
+    }
+
+    /**
+     * Returns the value of field datetime_highlight
+     *
+     * @return string
+     */
+    public function getDatetimeHighlight()
+    {
+        return $this->datetime_highlight;
     }
 
     /**

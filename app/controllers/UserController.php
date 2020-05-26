@@ -10,6 +10,9 @@ use App\Exceptions\HttpExceptions\Http500Exception;
 use App\Services\AbstractService;
 use App\Services\UserService;
 
+use App\Controllers\Helpers\Helper;
+
+
 /**
  * Operations with Users: CRUD
  */
@@ -55,8 +58,13 @@ class UserController extends AbstractController
      */
     public function getAllAction()
     {
+        $page = $this->request->get('page');
+        $limit = $this->request->get('limit');
+
         try {
-            return $this->userService->getAllUsers();
+            $usersList = $this->userService->getAllUsers();
+
+            return Helper::paginate($usersList, $page, $limit);
         } catch (ServiceException $e) {
             throw new Http500Exception(_('Internal Server Error'), (array) $e);
         }

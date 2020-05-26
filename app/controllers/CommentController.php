@@ -11,6 +11,8 @@ use App\Exceptions\HttpExceptions\Http500Exception;
 use App\Services\CommentService;
 use App\Services\PostService;
 
+use App\Controllers\Helpers\Helper;
+
 /**
  * Operations with Comments
  */
@@ -112,8 +114,13 @@ class CommentController extends AbstractController
      */
     public function getAllAction()
     {
+        $page = $this->request->get('page');
+        $limit = $this->request->get('limit');
+
         try {
-            return $this->commentService->getAllComments();
+            $commentsList = $this->commentService->getAllComments();
+
+            return Helper::paginate($commentsList, $page, $limit);
         } catch (ServiceException $e) {
             throw new Http500Exception(_('Internal Server Error'), (array) $e);
         }

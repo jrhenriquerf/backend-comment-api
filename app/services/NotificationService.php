@@ -44,9 +44,22 @@ class NotificationService extends AbstractService
     }
 
     /**
-     * Creating a new notification
+     * Expire notifications
      *
-     * @param object $data
+     * @param array $notifications
+     * 
+     * @return void
+     */
+    public function expireNotifications(array $notifications) {
+        foreach ($notifications as $notification) {
+            $this->setNotificationExpire($notification["id"]);
+        }
+    }
+    
+    /**
+     * Expire notification
+     *
+     * @param int $notificationId
      * 
      * @return void
      */
@@ -88,10 +101,9 @@ class NotificationService extends AbstractService
                 ->orderBy('datetime desc')
                 ->execute();
 
-            foreach ($notifications as $notification) {
-                $this->setNotificationExpire($notification->getId());
-                
+            foreach ($notifications as $notification) {                
                 $notificationsList[] = [
+                    'id' => $notification->getId(),
                     'message' => $notification->getMessage(),
                     'comment' => [
                         'comment' => $notification->comment->getComment(),
@@ -104,10 +116,7 @@ class NotificationService extends AbstractService
                 ];
             }
 
-            return [
-                'data' => $notificationsList,
-                'total' => count($notificationsList)
-            ];
+            return $notificationsList;
         } catch (\PDOException $e) {
             throw new ServiceException($e->getMessage());
         }
