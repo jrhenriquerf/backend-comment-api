@@ -33,7 +33,7 @@ Este projeto foi desenvolvido como um desafio para a empresa Esapiens e tem como
 
 ## Detalhes da solicitação e regras de negócio aplicadas
 ### Postagem de um comentário
-- Um usuário não pode efetuar mais de **4** comentários em **60** segundos.
+- Um usuário não pode efetuar mais de **5** comentários em **60** segundos.
 
 - Um usuário não assinante não poderá comentar em uma postagem de outro usuário
 não assinante.
@@ -42,7 +42,7 @@ não assinante.
 ### Compra de destaque
 - A compra de destaque possibilita que um comentário seja exibido com prioridade na
 listagem. Esta prioridade é calculada como “ganho de tempo”
-    - O sistema **retém 1%** do valor pago pela compra e cria uma transação de entrada para o valor retido e uma de saída para o usuário.
+    - O sistema **retém 10%** do valor pago pela compra e cria uma transação de entrada para o valor retido e uma de saída para o usuário.
     - Um comentário feito com 100 moedas garante ao usuário que comentou uma prioridade de 100 minutos na listagem de comentários de uma postagem.
      >  **Exemplo:** um comentário feito às 20:00 na postagem X com 100 moedas de destaque será exibido em primeiro lugar até as 21:40 (100 minutos). Caso mais de um comentário com destaque seja postado neste período o critério de desempate será o número de moedas enviado.
 

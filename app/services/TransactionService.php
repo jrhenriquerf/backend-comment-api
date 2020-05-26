@@ -12,7 +12,6 @@ use App\Exceptions\ServiceExceptions\ServiceException;
  */
 class TransactionService extends AbstractService
 {
-    private $tax = 0.1;
     private $taxValue;
 
     /** Unable to create transaction */
@@ -64,7 +63,7 @@ class TransactionService extends AbstractService
     }
 
     private function applyTax() {
-        $this->taxValue = $this->price * $this->tax;
+        $this->taxValue = $this->price * ($_ENV['PERCENT_TO_RETAIN_ON_TRANSACTION'] / 100);
         $this->price -= $this->taxValue;
     }
 }

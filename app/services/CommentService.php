@@ -149,7 +149,8 @@ class CommentService extends AbstractService
                 'highlight' => $comment->getHighlight(),
                 'price' => $comment->getPrice(),
                 'deleted' => $comment->getDeletedAt(),
-                'date' => $comment->getDateTime()
+                'date' => $comment->getDateTime(),
+                'highlightDateFinish' => $comment->getDatetimeHighlight()
             ];
         } catch (\PDOException $e) {
             throw new ServiceException($e->getMessage(), $e->getCode());
@@ -179,6 +180,39 @@ class CommentService extends AbstractService
     }
 
     /**
+     * Find user comments
+     * 
+     * @param int $userId
+     * @param int $secondsRole
+     * 
+     * @return array
+     */
+    public function countCommentsWithSecondsRole(int $userId, int $secondsRole = 60)
+    {
+        $dateRole = date('Y-m-d H:i:s', strtotime("-{$secondsRole} seconds"));
+
+        try {
+            $comments = Comment::query()
+                ->columns('COUNT(id) as quantity')
+                ->where('user_id = :userId:')
+                ->andWhere('datetime > :dateRole:')
+                ->bind([
+                    'userId' => $userId,
+                    'dateRole' => $dateRole
+                ])
+                ->execute();
+
+            if (!$comments) {
+                throw new ServiceException("Comments not found with userId {$userId}", self::ERROR_COMMENT_NOT_FOUND);
+            }
+
+            return $comments[0]->quantity;
+        } catch (\PDOException $e) {
+            throw new ServiceException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
      * Delete a comment
      * 
      * @param int $commentId
@@ -191,7 +225,7 @@ class CommentService extends AbstractService
             $comment = $this->findComment($commentId);
             $post = $this->postService->findPost($comment->getPostId());
 
-            if (!$this->testOwner($userId, $comment->getUserId()) && !$this->testOwner($userId, $post->getUserId())){
+            if ($userId != $comment->getUserId() && $userId != $post->getUserId()){
                 throw new ServiceException(
                     "Forbidden, comment isn't yours", 
                     self::ERROR_COMMENT_OWNER_USER, 
@@ -224,7 +258,7 @@ class CommentService extends AbstractService
         try {
             $post = $this->postService->findPost($postId);
 
-            if (!$this->testOwner($userId, $post->getUserId())){
+            if ($userId != $post->getUserId()){
                 throw new ServiceException(
                     "Forbidden, comment isn't yours", 
                     self::ERROR_COMMENT_OWNER_USER, 
@@ -257,9 +291,5 @@ class CommentService extends AbstractService
         } catch (\PDOException $e) {
             throw new ServiceException($e->getMessage(), $e->getCode());
         }
-    }
-
-    private function testOwner($userId, $commentUserId) {
-        return $userId == $commentUserId;
     }
 }

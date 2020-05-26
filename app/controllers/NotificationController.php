@@ -34,7 +34,7 @@ class NotificationController extends AbstractController
 
             $paginatedItems = Helper::paginate($notificationsList, $page, $limit);
 
-            $this->notificationService->expireNotifications($paginatedItems["data"]);
+            $this->notificationService->expireNotifications($paginatedItems["data"], $_ENV['HOURS_EXPIRE_NOTIFICATION']);
 
             return $paginatedItems;
         } catch (ServiceException $e) {

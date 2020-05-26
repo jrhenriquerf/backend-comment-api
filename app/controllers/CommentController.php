@@ -37,6 +37,17 @@ class CommentController extends AbstractController
         $data->highlight = $data->price > 0 ? 1 : 0;
 
         try {
+            $userComments = $this->commentService->countCommentsWithSecondsRole($data->user_id);
+            
+            if ($userComments >= $_ENV['COMMENTS_PER_MINUTE']) {
+                throw new Http422Exception(
+                    "Sorry, something went wrong",
+                    [
+                        'message' => "You can't make more than 5 comments per minute"
+                    ]
+                );
+            }
+
             $user = $this->userService->findUser($data->user_id);
 
             if ($data->highlight && !$this->userService->canBuyHighlight($data->user_id, $data->price)) {
@@ -168,6 +179,7 @@ class CommentController extends AbstractController
         } catch (ServiceException $e) {
             switch ($e->getCode()) {
                 case CommentService::ERROR_COMMENT_NOT_FOUND:
+                    throw new Http404Exception($e->getMessage(), (array) $e);
                 case CommentService::ERROR_UNABLE_DELETE_COMMENT:
                     throw new Http422Exception($e->getMessage(), (array) $e);
                 case CommentService::ERROR_COMMENT_OWNER_USER:

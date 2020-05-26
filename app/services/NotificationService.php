@@ -60,12 +60,13 @@ class NotificationService extends AbstractService
      * Expire notification
      *
      * @param int $notificationId
+     * @param int $hoursToExpire
      * 
      * @return void
      */
-    public function setNotificationExpire(int $notificationId)
+    public function setNotificationExpire(int $notificationId, int $hoursToExpire = 1)
     {
-        $expireAt = date('Y-m-d H:i:s', strtotime("+1 hour"));
+        $expireAt = date('Y-m-d H:i:s', strtotime("+{$hoursToExpire} hour"));
 
         try {
             $notification   = $this->findNotification($notificationId);
