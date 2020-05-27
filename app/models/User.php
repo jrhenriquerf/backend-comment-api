@@ -57,6 +57,12 @@ class User extends \Phalcon\Mvc\Model
     protected $subscriber;
 
     /**
+     *
+     * @var string
+     */
+    protected $deleted_at;
+
+    /**
      * Method to set the value of field id
      *
      * @param integer $id
@@ -161,6 +167,19 @@ class User extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Method to set the value of field deleted_at
+     *
+     * @param string $deleted_at
+     * @return $this
+     */
+    public function setDeletedAt($deleted_at)
+    {
+        $this->deleted_at = $deleted_at;
+
+        return $this;
+    }
+
+    /**
      * Returns the value of field id
      *
      * @return integer
@@ -241,6 +260,16 @@ class User extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Returns the value of field deleted_at
+     *
+     * @return string
+     */
+    public function getDeletedAt()
+    {
+        return $this->deleted_at;
+    }
+
+    /**
      * Validations and business logic
      *
      * @return boolean
@@ -270,6 +299,7 @@ class User extends \Phalcon\Mvc\Model
         $this->setSchema("social_media");
         $this->setSource("User");
         $this->hasMany('id', 'App\Models\Comment', 'user_id', ['alias' => 'Comment']);
+        $this->hasMany('id', 'App\Models\Notification', 'user_id', ['alias' => 'Notification']);
         $this->hasMany('id', 'App\Models\Post', 'user_id', ['alias' => 'Post']);
         $this->hasMany('id', 'App\Models\Transaction', 'user_id', ['alias' => 'Transaction']);
     }

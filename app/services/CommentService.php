@@ -71,6 +71,7 @@ class CommentService extends AbstractService
         try {
             $comments = Comment::query()
                 ->where('deleted_at is null')
+                ->orderBy('datetime desc')
                 ->execute();
 
             foreach ($comments as $comment) {
@@ -113,6 +114,10 @@ class CommentService extends AbstractService
      */
     private function orderComments($a, $b) {
         if ($this->checkHighlight($a["highlightDateFinish"])) {
+            if ($a["price"] == $b["price"]) {
+                return strtotime($a['highlightDateFinish']) > strtotime($b['highlightDateFinish']) ? -1 : 1;
+            }
+
             return $a["price"] > $b["price"] ? -1 : 1;
         }
 

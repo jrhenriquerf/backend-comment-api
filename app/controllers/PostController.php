@@ -143,6 +143,8 @@ class PostController extends AbstractController
             $this->postService->deletePost($postId, $data->user_id);
         } catch (ServiceException $e) {
             switch ($e->getCode()) {
+                case PostService::ERROR_POST_OWNER_USER:
+                    throw new Http403Exception($e->getMessage(), (array) $e);
                 case PostService::ERROR_POST_NOT_FOUND:
                 case PostService::ERROR_UNABLE_DELETE_POST:
                     throw new Http422Exception($e->getMessage(), (array) $e);

@@ -62,7 +62,10 @@ class UserService extends AbstractService
         $usersList = [];
 
         try {
-            $users = (new User())->find();
+            $users = User::query()
+                ->where('deleted_at is null')
+                ->orderBy('datetime desc')
+                ->execute();
 
             foreach ($users as $user) {
                 $usersList[] = [
@@ -182,7 +185,7 @@ class UserService extends AbstractService
         try {
             $user = $this->findUser($userId);
             
-            $deleted = $user->delete();
+            $deleted = $user->setDeletedAt(date('Y-m-d H:i:s'))->save();
 
             if (!$deleted) {
                 throw new ServiceException("Unable to delete user", self::ERROR_UNABLE_DELETE_USER, $deleted->getMessages());

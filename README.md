@@ -31,7 +31,7 @@ docker-compose up -d
 > **Obs.:** Este comando irá subir containers com o servidor php (**localhost**) na **porta 8080** e o banco de dados (**localhost**) na **porta 3306**, além de rodar as migrations do banco com alguns dados.
 - Ainda na pasta do projeto, rode o comando abaixo para atualizar o banco com as tabelas e alguns dados
 ```bash
-vendor/phalcon/migrations/phalcon-migrations run --table=User,Post,Comment,Notification,Transaction
+docker exec php-server vendor/phalcon/migrations/phalcon-migrations run --table=User,Post,Comment,Notification,Transaction
 ```
 - E pronto, agora você pode fazer as requições seguindo esta [documentação das APIs desenvolvidas](https://documenter.getpostman.com/)
 

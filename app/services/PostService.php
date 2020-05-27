@@ -57,7 +57,10 @@ class PostService extends AbstractService
         $postsList = [];
 
         try {
-            $posts = (new Post())->find();
+            $posts = Post::query()
+                ->where('deleted_at is null')
+                ->orderBy('datetime desc')
+                ->execute();
 
             foreach ($posts as $post) {
                 $postsList[] = [
@@ -100,7 +103,8 @@ class PostService extends AbstractService
                     'email' => $post->user->email,
                 ],
                 'content' => $post->content,
-                'type' => $post->type
+                'type' => $post->type,
+                'deletedAt' => $post->deleted_at
             ];
         } catch (\PDOException $e) {
             throw new ServiceException($e->getMessage(), $e->getCode());
@@ -183,7 +187,7 @@ class PostService extends AbstractService
             
             $this->testPostOwner($userId, $post->getUserId());
 
-            $deleted = $post->delete();
+            $deleted = $post->setDeletedAt(date('Y-m-d H:i:s'))->save();
 
             if (!$deleted) {
                 throw new ServiceException("Unable to delete post", self::ERROR_UNABLE_DELETE_POST, $deleted->getMessages());
