@@ -33,7 +33,7 @@ docker-compose up -d
 ```bash
 docker exec php-server vendor/phalcon/migrations/phalcon-migrations run --table=User,Post,Comment,Notification,Transaction
 ```
-- E pronto, agora você pode fazer as requições seguindo esta [documentação das APIs desenvolvidas](https://documenter.getpostman.com/)
+- E pronto, agora você pode fazer as requições seguindo esta [documentação das APIs desenvolvidas](https://documenter.getpostman.com/view/11536451/SztBaTPe?version=latest)
 
 ## Detalhes da solicitação e regras de negócio aplicadas
 ### Postagem de um comentário
@@ -88,7 +88,8 @@ Pensando nisso, realizei a escolha do framework Phalcon que por vários benchmar
 - [Medium - Symfony Vs Phalcon: Which framework to use for building REST APIS?](https://medium.com/naukri-engineering/symfony-vs-phalcon-which-framework-to-use-for-building-rest-apis-942120ab7c99)
 - [DevMedia - Melhore a performance com o PhalconPHP](https://www.devmedia.com.br/melhore-a-performance-com-o-phalconphp/29237)
 
-![Benchmarking phalcon](https://d33wubrfki0l68.cloudfront.net/6b73a12a246c0d74e042080b754c6bcff846caaa/be640/assets/files/2017-04-13-requests-per-second.png "Benchmarking phalcon")
-
+![Benchmarking phalcon](https://github.com/jrhenriquerf/backend-comment-api/blob/master/about/benchmark_phalcon.png "Benchmarking phalcon")
 
 ## Estrutura do banco de dados
+
+![Database](https://github.com/jrhenriquerf/backend-comment-api/blob/master/about/database_structure.png "Database structure")
