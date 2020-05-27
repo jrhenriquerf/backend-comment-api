@@ -33,7 +33,7 @@ docker-compose up -d
 ```bash
 vendor/phalcon/migrations/phalcon-migrations run --table=User,Post,Comment,Notification,Transaction
 ```
-- E pronto, agora você pode fazer as requições seguindo esta [documentação das APIs desenvolvidas](https://documenter.getpostman.com/)
+- E pronto, agora você pode fazer as requições seguindo esta [documentação das APIs desenvolvidas](https://documenter.getpostman.com/view/11536451/SztBaTPe?version=latest)
 
 ## Detalhes da solicitação e regras de negócio aplicadas
 ### Postagem de um comentário
