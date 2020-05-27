@@ -79,13 +79,24 @@ class CommentController extends AbstractController
                 $this->transactionService->buyHighlight($data->user_id, $comment["id"]);
             }
 
+            $notificationMessage = "{$user->getName()} have commented on your post";
+            $commentId = $comment["id"];
+            $userId = $post->getUserId();
+
             $this->notify(
-                $comment["id"], 
-                "{$user->getName()} have commented on your post", 
-                $post->getUserId()
+                $commentId, 
+                $notificationMessage, 
+                $userId
             );
 
             $this->db->commit();
+
+            // Send email
+            // $this->notificationService->sendEmail(
+            //     $commentId, 
+            //     $notificationMessage, 
+            //     $userId
+            // );
         } catch (ServiceException $e) {
             $this->db->rollback();
             
@@ -104,13 +115,13 @@ class CommentController extends AbstractController
     /**
      * Notify post owner
      * 
-     * @param $comment
-     * @param $message
-     * @param $userId
+     * @param int $commentId
+     * @param string $message
+     * @param int $userId
      * 
      * @return void
      */
-    private function notify($commentId, $message, $userId) {
+    private function notify(int $commentId, string $message, int $userId) {
         $this->notificationService->createNotification((object) [
             'commentId' => $commentId,
             'message' => $message,

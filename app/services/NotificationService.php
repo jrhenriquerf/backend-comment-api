@@ -44,6 +44,28 @@ class NotificationService extends AbstractService
     }
 
     /**
+     * Send an email
+     *
+     * @param int $commentId
+     * @param string $message
+     * @param int $userId
+     * 
+     * @return void
+     */
+    public function sendEmail(int $commentId, string $message, int $userId)
+    {
+        $user = $this->userService->findUser($userId);
+
+        $headers .= "Content-type: text/plain; charset=iso-8859-1\n";
+        $headers = "From: {$from} \n";
+        $from = "noreply@gmail.com";
+        $to = $user->getEmail();
+        $subject = "Someone comment on your post";
+
+        mail($to, $subject, $message, $headers);
+    }
+
+    /**
      * Expire notifications
      *
      * @param array $notifications

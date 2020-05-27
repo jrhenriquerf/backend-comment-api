@@ -19,6 +19,12 @@ class Post extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     */
+    protected $type;
+
+    /**
+     *
      * @var integer
      */
     protected $user_id;
@@ -28,18 +34,6 @@ class Post extends \Phalcon\Mvc\Model
      * @var string
      */
     protected $datetime;
-
-    /**
-     *
-     * @var string
-     */
-    protected $attachment;
-
-    /**
-     *
-     * @var string
-     */
-    protected $attachmentType;
 
     /**
      * Method to set the value of field id
@@ -63,6 +57,19 @@ class Post extends \Phalcon\Mvc\Model
     public function setContent($content)
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field type
+     *
+     * @param string $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
 
         return $this;
     }
@@ -94,32 +101,6 @@ class Post extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Method to set the value of field attachment
-     *
-     * @param string $attachment
-     * @return $this
-     */
-    public function setAttachment($attachment)
-    {
-        $this->attachment = $attachment;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field attachmentType
-     *
-     * @param string $attachmentType
-     * @return $this
-     */
-    public function setAttachmentType($attachmentType)
-    {
-        $this->attachmentType = $attachmentType;
-
-        return $this;
-    }
-
-    /**
      * Returns the value of field id
      *
      * @return integer
@@ -140,6 +121,16 @@ class Post extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Returns the value of field type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * Returns the value of field user_id
      *
      * @return integer
@@ -157,26 +148,6 @@ class Post extends \Phalcon\Mvc\Model
     public function getDatetime()
     {
         return $this->datetime;
-    }
-
-    /**
-     * Returns the value of field attachment
-     *
-     * @return string
-     */
-    public function getAttachment()
-    {
-        return $this->attachment;
-    }
-
-    /**
-     * Returns the value of field attachmentType
-     *
-     * @return string
-     */
-    public function getAttachmentType()
-    {
-        return $this->attachmentType;
     }
 
     /**

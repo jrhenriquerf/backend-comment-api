@@ -170,16 +170,10 @@ class PostController extends AbstractController
             $errors['content'] = 'Content must consist of a text';
         }
 
-        if (!empty($data->attachment)
-            && (!is_string($data->attachment) 
-            || !preg_match('/^(http|https|ftp):\/\//', $data->attachment))) {
-            $errors['attachment'] = 'attachment must consist of a link with protocol';
-        }
-
-        if (!empty($data->attachmentType)
-            && (!is_string($data->attachmentType)
-            || !preg_match('/^(video|image)$/', $data->attachmentType))) {
-            $errors['attachmentType'] = 'attachment must consist in "video" or "image"';
+        if (!empty($data->type)
+            && (!is_string($data->type) 
+            || !preg_match('/^(text|image|video)$/', $data->type))) {
+            $errors['type'] = 'Type must consist of a value between "text", "image" or "video"';
         }
 
         return $errors;
@@ -201,6 +195,10 @@ class PostController extends AbstractController
 
         if (empty($data->content)) {
             $errors['content'] = 'Content is required';
+        }
+        
+        if (empty($data->content)) {
+            $errors['type'] = 'Type is required';
         }
 
         return $errors;

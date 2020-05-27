@@ -36,8 +36,7 @@ class PostService extends AbstractService
             $post   = new Post();
             $result = $post->setUserId($data->user_id)
                 ->setContent($data->content)
-                ->setAttachment($data->attachment)
-                ->setAttachmentType($data->attachmentType)
+                ->setType($data->type)
                 ->create();
 
             if (!$result) {
@@ -70,10 +69,7 @@ class PostService extends AbstractService
                         'email' => $post->user->email,
                     ],
                     'content' => $post->content,
-                    'attachment' => [
-                        'path' => $post->attachment,
-                        'type' => $post->attachmentType,
-                    ]
+                    'type' => $post->type
                 ];
             }
 
@@ -104,10 +100,7 @@ class PostService extends AbstractService
                     'email' => $post->user->email,
                 ],
                 'content' => $post->content,
-                'attachment' => [
-                    'path' => $post->attachment,
-                    'type' => $post->attachmentType,
-                ]
+                'type' => $post->type
             ];
         } catch (\PDOException $e) {
             throw new ServiceException($e->getMessage(), $e->getCode());
@@ -153,8 +146,7 @@ class PostService extends AbstractService
             
             $updated = $post->setUserId($data->user_id ?: $post->getUserId())
                 ->setContent($data->content ?: $post->getContent())
-                ->setAttachment(key_exists("attachment", $data) ? $data->attachment : $post->getAttachment())
-                ->setAttachmentType(key_exists("attachmentType", $data) ? $data->attachmentType : $post->getAttachmentType())
+                ->setType($data->type ?: $post->getType())
                 ->save();
 
             if (!$updated) {
@@ -170,10 +162,7 @@ class PostService extends AbstractService
                     'email' => $post->user->email,
                 ],
                 'content' => $post->content,
-                'attachment' => [
-                    'path' => $post->attachment,
-                    'type' => $post->attachmentType,
-                ]
+                'type' => $post->type
             ];
         } catch (\PDOException $e) {
             throw new ServiceException($e->getMessage(), $e->getCode());

@@ -24,6 +24,9 @@ RUN set -xe && \
     && \
     php -m
 
+#RUN apt update
+#RUN apt install sendmail -y
+
 ENV WEB_DOCUMENT_ROOT=/var/www/html/application/public
 
 CMD [ "php", "-S", "0.0.0.0:8080", "-t", "/", "public/.htrouter.php" ]
