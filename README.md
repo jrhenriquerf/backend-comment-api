@@ -70,7 +70,7 @@ listagem. Esta prioridade é calculada como “ganho de tempo”
     "comentário": "comment"
 }
 ```
-> Comparação entre os dados solicitados e os atributos da API liberada.
+> O json acima é uma comparação entre os dados solicitados no desafio e os atributos da API desenvolvida.
 
 ### Regras para exclusão
 - Somente o dono de um comentário ou o dono da postagem no qual o
