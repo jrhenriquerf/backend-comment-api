@@ -29,6 +29,10 @@ cp .env.example .env
 docker-compose up -d
 ```
 > **Obs.:** Este comando irá subir containers com o servidor php (**localhost**) na **porta 8080** e o banco de dados (**localhost**) na **porta 3306**, além de rodar as migrations do banco com alguns dados.
+- Rode o seguinte comando para instalar as dependências
+```bash
+docker exec php-server composer install 
+```
 - Ainda na pasta do projeto, rode o comando abaixo para atualizar o banco com as tabelas e alguns dados
 ```bash
 docker exec php-server vendor/phalcon/migrations/phalcon-migrations run --table=User,Post,Comment,Notification,Transaction
