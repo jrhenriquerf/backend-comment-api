@@ -1,0 +1,4 @@
+38,usuario1,$2y$10$.x6cPwkhxPa/DAsetJSMR.i3C2cWHFQWHnaMkmYdTovkKOE5qmf2O,usuario1@domain.com,"Usuário não subscrito",100000,"2020-05-28 00:10:01",0,NULL
+39,usuario2,$2y$10$Y8a6qy87SEoHHFf2L/wLpeOt.5uwHWKCfyx5ehHU51pVTUPrCQkP.,usuario2@domain.com,"Usuário para exclusão",100000,"2020-05-28 00:14:47",1,NULL
+40,usuario3,$2y$10$8PaMka8xZZ.YPDtKZAmoKuPjR44ZjWf/OtPesAY5VsXgfhEcA2x0q,usuario3@domain.com,"Usuário de teste",825,"2020-05-28 00:16:31",0,NULL
+41,usuario4,$2y$10$XR42aXCMuoR2KF26pdANSe61M2N5EY9h02E66VyyfdISfs.ISKNva,usuario4@domain.com,"Usuário de teste para comentários",999901,"2020-05-28 00:17:43",1,NULL

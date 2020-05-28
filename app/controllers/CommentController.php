@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Exceptions\ServiceExceptions\ServiceException;
 use App\Exceptions\HttpExceptions\Http400Exception;
 use App\Exceptions\HttpExceptions\Http403Exception;
+use App\Exceptions\HttpExceptions\Http404Exception;
 use App\Exceptions\HttpExceptions\Http422Exception;
 use App\Exceptions\HttpExceptions\Http500Exception;
 
@@ -101,11 +102,14 @@ class CommentController extends AbstractController
             $this->db->rollback();
             
             switch ($e->getCode()) {
+                case NotificationService::ERROR_NOTIFICATION_NOT_FOUND:
+                    throw new Http404Exception($e->getMessage(), (array) $e);
+                    break;
                 case CommentService::ERROR_UNABLE_CREATE_COMMENT:
                 case NotificationService::ERROR_UNABLE_CREATE_NOTIFICATION:
                 case NotificationService::ERROR_UNABLE_UPDATE_NOTIFICATION:
-                case NotificationService::ERROR_NOTIFICATION_NOT_FOUND:
                     throw new Http422Exception($e->getMessage(), (array) $e);
+                    break;
                 default:
                     throw new Http500Exception(_('Internal Server Error'), (array) $e);
             }
@@ -160,7 +164,13 @@ class CommentController extends AbstractController
         try {
             return $this->commentService->getComment($commentId);
         } catch (ServiceException $e) {
-            throw new Http500Exception(_('Internal Server Error'), (array) $e);
+            switch ($e->getCode()) {
+                case CommentService::ERROR_COMMENT_NOT_FOUND:
+                    throw new Http404Exception($e->getMessage(), (array) $e);
+                    break;
+                default:
+                    throw new Http500Exception(_('Internal Server Error'), (array) $e);
+            }
         }
     }
 
@@ -191,10 +201,13 @@ class CommentController extends AbstractController
             switch ($e->getCode()) {
                 case CommentService::ERROR_COMMENT_NOT_FOUND:
                     throw new Http404Exception($e->getMessage(), (array) $e);
+                    break;
                 case CommentService::ERROR_UNABLE_DELETE_COMMENT:
                     throw new Http422Exception($e->getMessage(), (array) $e);
+                    break;
                 case CommentService::ERROR_COMMENT_OWNER_USER:
                     throw new Http403Exception($e->getMessage(), (array) $e);
+                    break;
                 default:
                     throw new Http500Exception(_('Internal Server Error'), (array) $e);
             }
@@ -227,10 +240,14 @@ class CommentController extends AbstractController
         } catch (ServiceException $e) {
             switch ($e->getCode()) {
                 case PostService::ERROR_POST_NOT_FOUND:
+                    throw new Http404Exception($e->getMessage(), (array) $e);
+                    break;
                 case CommentService::ERROR_UNABLE_DELETE_COMMENT:
                     throw new Http422Exception($e->getMessage(), (array) $e);
+                    break;
                 case CommentService::ERROR_COMMENT_OWNER_USER:
                     throw new Http403Exception($e->getMessage(), (array) $e);
+                    break;
                 default:
                     throw new Http500Exception(_('Internal Server Error'), (array) $e);
             }

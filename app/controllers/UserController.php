@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Exceptions\ServiceExceptions\ServiceException;
 use App\Exceptions\HttpExceptions\Http400Exception;
+use App\Exceptions\HttpExceptions\Http404Exception;
 use App\Exceptions\HttpExceptions\Http422Exception;
 use App\Exceptions\HttpExceptions\Http500Exception;
 
@@ -96,8 +97,11 @@ class UserController extends AbstractController
         } catch (ServiceException $e) {
             switch ($e->getCode()) {
                 case UserService::ERROR_USER_NOT_FOUND:
+                    throw new Http404Exception($e->getMessage(), (array) $e);
+                    break;
                 case UserService::ERROR_UNABLE_UPDATE_USER:
                     throw new Http422Exception($e->getMessage(), (array) $e);
+                    break;
                 default:
                     throw new Http500Exception(_('Internal Server Error'), (array) $e);
             }
@@ -118,8 +122,11 @@ class UserController extends AbstractController
         } catch (ServiceException $e) {
             switch ($e->getCode()) {
                 case UserService::ERROR_USER_NOT_FOUND:
+                    throw new Http404Exception($e->getMessage(), (array) $e);
+                    break;
                 case UserService::ERROR_UNABLE_DELETE_USER:
                     throw new Http422Exception($e->getMessage(), (array) $e);
+                    break;
                 default:
                     throw new Http500Exception(_('Internal Server Error'), (array) $e);
             }
